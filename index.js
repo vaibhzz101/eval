@@ -1,6 +1,6 @@
 require('dotenv').config()
 const express = require('express')
-const dbconnection = require('./config/db')
+const connection = require('./config/db')
 const cors = require('cors')
 const userRoute = require('./routes/users.routre')
 const postRoute = require('./routes/post.route')
@@ -8,21 +8,29 @@ const authentication = require('./miidlewares/authentication.middlewares')
 const app = express()
 
 // ! middleware 
-app.use(cors())
+
 app.use(express.json())
-app.use('/users',userRoute)
+app.use(cors())
 
+app.get("/", (req,res)=>{
+    res.send("Home page")
+})
+app.use("/users", userRoute)
 app.use(authentication)
-app.use('/posts',postRoute)
+app.use("/notes", postRoute)
 
 
-app.get('/',(req,res)=>res.send('homeroute Of backend'))
 
-app.listen(process.env.port,()=>{
-    try {
-        dbconnection;
-        console.log("sever runnign at port " +  process.env.port);
-    } catch (error) {
-        console.log({err : error.message})
+app.listen(process.env.port, async()=>{
+    try{
+        await connection
+        console.log("connected to db")
+
     }
+    catch(error){
+        console.log("cannot connect to db")
+        console.log(error)
+
+    }
+    console.log(`Running the server at port ${process.env.port}`)
 })
