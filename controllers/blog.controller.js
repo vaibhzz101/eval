@@ -1,8 +1,8 @@
-const PostModel = require('../models/post.model')
+const {BlogModel} = require('../models/blogs.model')
 
 exports.getall = async(req,res) =>{
     try {
-        const posts = await PostModel.find(  {userID : req.body.userID})
+        const posts = await BlogModel.find(  {userID : req.body.userID})
         res.json(posts)
     } catch (error) {
         res.json({msg : error.message})
@@ -13,9 +13,9 @@ exports.create = async(req,res) =>{
     const {title ,body,device} = req.body;
     let userID = req.body.userID;
     try {
-        const newPost = new PostModel({title ,body,device,userID})
+        const newPost = new BlogModel({title ,body,device,userID})
         await newPost.save()
-        res.json({msg :" poste created" })
+        res.json({msg :" blog created" })
         
     } catch (error) {
         res.json({msg : error.message })
@@ -27,7 +27,7 @@ exports.update = async(req,res) =>{
     const _id = req.params.id;
     const userID = req.body.userID;
     
-    const post = await PostModel.find({_id})
+    const post = await BlogModel.find({_id})
     
     console.log(userID ,post);
     try {
@@ -35,8 +35,8 @@ exports.update = async(req,res) =>{
             res.json({msg : "usernote authorised"})
         }
         else{
-            const data  = await PostModel.findByIdAndUpdate({_id},payload)
-            res.json({msg : "post updated"})
+            const data  = await BlogModel.findByIdAndUpdate({_id},payload)
+            res.json({msg : "blog updated"})
         }
         
     } catch (error) {
@@ -49,7 +49,7 @@ exports.delete = async(req,res) =>{
     const _id = req.params.id;
     const userID = req.body.userID;
     
-    const post = await PostModel.find({_id})
+    const post = await BlogModel.find({_id})
     
     console.log(userID ,post);
     try {
@@ -57,8 +57,8 @@ exports.delete = async(req,res) =>{
             res.json({msg : "usernote authorised"})
         }
         else{
-             await PostModel.findByIdAndDelete({_id})
-            res.json({msg : "post deleted"})
+             await BlogModel.findByIdAndDelete({_id})
+            res.json({msg : "blog deleted"})
         }
         
     } catch (error) {
